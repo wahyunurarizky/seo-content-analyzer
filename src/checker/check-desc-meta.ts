@@ -1,4 +1,4 @@
-import { countChar, countWords, getDensity, wordExists } from '../helper/helper'
+import { countChar, wordExists } from '../helper/helper'
 import { AtomicChecker, SectionChecker } from './SectionChecker'
 
 export class CheckDescMeta extends SectionChecker {

@@ -1,17 +1,4 @@
-export type statusMessage = 'perfect' | 'good' | 'bad'
-
-export interface SectionMessage {
-  score: number
-  code: string
-  status: statusMessage
-  text: string
-}
-
-export interface SectionScore {
-  name: string
-  score: number
-  messages: Array<SectionMessage>
-}
+import { SectionMessage, SectionScore, statusMessage } from '../types'
 
 export class SectionChecker implements SectionScore {
   public name: string
