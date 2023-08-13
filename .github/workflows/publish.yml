@@ -31,6 +31,7 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: pnpm run release
+          registry-url: https://registry.npmjs.org
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
