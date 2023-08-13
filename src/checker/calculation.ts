@@ -31,7 +31,7 @@ const Calculation = (
   const contentScore = new CheckContent(
     // new DOMParser().parseFromString(content, 'text/html'),
     domDocument,
-    content
+    keyword
   )
   const descMetaScore = new CheckDescMeta(descriptionMeta, keyword)
   const titleScore = new CheckTitle(title, keyword)
