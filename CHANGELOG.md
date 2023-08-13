@@ -1,5 +1,12 @@
 # seo-content-analyzer
 
+## 1.1.1
+
+### Patch Changes
+
+- fb156eb: test only
+- 67efec1: typo calculation
+
 ## 1.1.0
 
 ### Minor Changes
