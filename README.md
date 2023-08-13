@@ -19,7 +19,7 @@ const result = SEOContentAnalyzer({
 })
 
 //JAVSASCRIPT
-import SEOContentAnalyzer from 'seo-content-analyzer/client'
+import SEOContentAnalyzer from 'seo-content-analyzer/dist/client'
 const result = SEOContentAnalyzer({
   keyword: 'your-keyword-here',
   title: 'your-title-here',
