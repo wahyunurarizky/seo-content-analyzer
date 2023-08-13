@@ -1,16 +1,13 @@
-import jsdom from 'jsdom'
-const { JSDOM } = jsdom
 import { countWords, getDensity, wordExists } from '../helper/helper'
 import { AtomicChecker, SectionChecker } from './SectionChecker'
 
 export class CheckContent extends SectionChecker {
-  private domContent: jsdom.JSDOM
-  private contentText: string
+  private domContent: Document
 
-  constructor(text: string, keyword: string) {
-    super('Content score', text, keyword)
-    this.domContent = new JSDOM(text)
-    this.contentText = this.domContent.window.document.body?.textContent || ''
+  constructor(domContent: Document, keyword: string) {
+    const contentText = domContent.body?.textContent || ''
+    super('Content score', contentText, keyword)
+    this.domContent = domContent
 
     this.checkContentMinimumWords()
     this.checkH1Exists()
@@ -24,7 +21,7 @@ export class CheckContent extends SectionChecker {
   }
 
   private checkContentMinimumWords() {
-    const contentLength = countWords(this.contentText)
+    const contentLength = countWords(this.text)
     const perfectMinimum = 300
     const goodMinimum = 150
 
@@ -52,7 +49,7 @@ export class CheckContent extends SectionChecker {
   }
 
   private checkH1Exists() {
-    const listOfH1 = this.domContent.window.document.getElementsByTagName('h1')
+    const listOfH1 = this.domContent.getElementsByTagName('h1')
 
     const message = new AtomicChecker('H1_EXIST', `You should add a H1`)
 
@@ -71,7 +68,7 @@ export class CheckContent extends SectionChecker {
     this.messages.push(message.getResult())
   }
   private checkH1ContainsKeyword() {
-    const listOfH1 = this.domContent.window.document.getElementsByTagName('h1')
+    const listOfH1 = this.domContent.getElementsByTagName('h1')
 
     const message = new AtomicChecker(
       'H1_USE_KEYWORD',
@@ -94,7 +91,7 @@ export class CheckContent extends SectionChecker {
   }
 
   private checkFirstParagraphContainsKeyword() {
-    const firstParagraph = this.domContent.window.document.querySelector('p')
+    const firstParagraph = this.domContent.querySelector('p')
 
     const message = new AtomicChecker(
       'FIRST_PARAGRAPH_CONTAINS_KEYWORD',
@@ -120,10 +117,7 @@ export class CheckContent extends SectionChecker {
       `You should use the focus keyword keyword ${this.keyword} more often, to improve the keyword density (0%)`
     )
 
-    const [densityResult, keywordFound] = getDensity(
-      this.contentText,
-      this.keyword
-    )
+    const [densityResult, keywordFound] = getDensity(this.text, this.keyword)
 
     if (densityResult > 0) {
       message.score = 20
@@ -136,7 +130,7 @@ export class CheckContent extends SectionChecker {
   }
 
   private checkLinkExists() {
-    const aTags = this.domContent.window.document.getElementsByTagName('a')
+    const aTags = this.domContent.getElementsByTagName('a')
     const message = new AtomicChecker(
       'LINK_EXISTS',
       `Add relevant links to improve user experience and internal link structure`
@@ -153,8 +147,7 @@ export class CheckContent extends SectionChecker {
   }
 
   private checkImageExists() {
-    const imageTags =
-      this.domContent.window.document.getElementsByTagName('img')
+    const imageTags = this.domContent.getElementsByTagName('img')
     const message = new AtomicChecker('IMG_EXISTS', `You should add an image`)
 
     if (imageTags.length > 0) {
@@ -168,8 +161,7 @@ export class CheckContent extends SectionChecker {
   }
 
   private checkImageAltContainsKeword() {
-    const listOfImg =
-      this.domContent.window.document.getElementsByTagName('img')
+    const listOfImg = this.domContent.getElementsByTagName('img')
 
     const message = new AtomicChecker(
       'IMG_ALT_USE_KEYWORD',
@@ -191,8 +183,7 @@ export class CheckContent extends SectionChecker {
     this.messages.push(message.getResult())
   }
   private checkImageTitleContainsKeword() {
-    const listOfImg =
-      this.domContent.window.document.getElementsByTagName('img')
+    const listOfImg = this.domContent.getElementsByTagName('img')
 
     const message = new AtomicChecker(
       'IMG_TITLE_USE_KEYWORD',
