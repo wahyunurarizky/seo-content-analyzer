@@ -1,5 +1,12 @@
 # seo-content-analyzer
 
+## 1.1.3
+
+### Patch Changes
+
+- ced80a4: test
+- 0ec2f21: fix no need keyword exist and refactor types
+
 ## 1.1.1
 
 ### Patch Changes
