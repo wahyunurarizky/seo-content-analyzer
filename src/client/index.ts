@@ -4,7 +4,7 @@ import { Param } from '../types'
 const SEOContentAnalyzer = (param: Param) => {
   return Calculation(
     param,
-    new DOMParser().parseFromString(param.content, 'text/html')
+    new DOMParser().parseFromString(param.content.toLowerCase(), 'text/html')
   )
 }
 

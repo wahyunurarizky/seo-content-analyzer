@@ -29,6 +29,7 @@ export const wordExists = (
   keyword: string,
   firstNumChar?: number
 ): boolean => {
+  text = text.toLowerCase()
   if (firstNumChar) {
     let i = firstNumChar - 1
     while (text[i] && text[i]?.trim()) {
