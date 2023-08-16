@@ -1,5 +1,11 @@
 # seo-content-analyzer
 
+## 1.2.2
+
+### Patch Changes
+
+- cabd248: fix lang
+
 ## 1.3.0
 
 ### Minor Changes
