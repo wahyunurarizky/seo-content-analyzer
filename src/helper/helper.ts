@@ -39,3 +39,19 @@ export const wordExists = (
   }
   return splitWords(text).includes(keyword)
 }
+
+export const insertText = (
+  text: string,
+  index: number,
+  addText: string
+): string => {
+  return text.slice(0, index) + addText + text.slice(index)
+}
+
+export const removeCharOfString = (
+  text: string,
+  bottomIndex: number,
+  topIndex: number
+): string => {
+  return text.slice(0, bottomIndex) + text.slice(topIndex + 1)
+}

@@ -1,9 +1,10 @@
 import { countChar, wordExists } from '../helper/helper'
+import { getTranslation } from '../types'
 import { AtomicChecker, SectionChecker } from './SectionChecker'
 
 export class CheckDescMeta extends SectionChecker {
-  constructor(text: string, keyword: string) {
-    super('Meta description score', text, keyword)
+  constructor(text: string, keyword: string, t: getTranslation) {
+    super('Meta description score', text, keyword, t)
     this.checkLength()
     this.containsKeyword()
   }
@@ -12,32 +13,43 @@ export class CheckDescMeta extends SectionChecker {
     const textLength = countChar(this.text)
     const perfectMinimum = 100
     const perfectMaximum = 160
+    const diff = perfectMaximum - textLength
 
     const message = new AtomicChecker(
       'DESC_META_LENGTH',
-      `The Meta description is too short, ${
-        perfectMaximum - textLength
-      } characters available. (${textLength} of ${perfectMaximum} characters used)`
+      this.t('DESC_META_LENGTH', 'short', diff, textLength, perfectMaximum)
     )
 
     if (textLength > 0) {
       if (textLength > perfectMaximum) {
         message.score = 10
-        message.text = `The Meta description length is too long, ${
-          perfectMaximum - textLength
-        } characters available. (${textLength} of ${perfectMaximum} characters used)`
+        message.text = this.t(
+          'DESC_META_LENGTH',
+          'long',
+          diff,
+          textLength,
+          perfectMaximum
+        )
         message.status = 'good'
       } else if (textLength < perfectMinimum) {
         message.score = 10
-        message.text = `The Meta description length is too short, ${
-          perfectMaximum - textLength
-        } characters available. (${textLength} of ${perfectMaximum} characters used)`
+        message.text = this.t(
+          'DESC_META_LENGTH',
+          'short',
+          diff,
+          textLength,
+          perfectMaximum
+        )
         message.status = 'good'
       } else {
         message.score = 85
-        message.text = `The Meta description length is perfect, ${
-          perfectMaximum - textLength
-        } characters available. (${textLength} of ${perfectMaximum} characters used)`
+        message.text = this.t(
+          'DESC_META_LENGTH',
+          'perfect',
+          diff,
+          textLength,
+          perfectMaximum
+        )
         message.status = 'perfect'
       }
     }
@@ -48,12 +60,12 @@ export class CheckDescMeta extends SectionChecker {
   private containsKeyword() {
     const message = new AtomicChecker(
       'DESC_META_USE_KEYWORD',
-      `The focus keyword "${this.keyword}" doesn't appear in the Meta description`
+      this.t('DESC_META_USE_KEYWORD', 'not_used', this.keyword)
     )
 
     if (wordExists(this.text, this.keyword)) {
       message.score = 15
-      message.text = `The focus keyword "${this.keyword}" is used in the Meta description`
+      message.text = this.t('DESC_META_USE_KEYWORD', 'used', this.keyword)
       message.status = 'perfect'
     }
 

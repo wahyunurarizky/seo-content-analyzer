@@ -1,15 +1,16 @@
 import { CheckContent } from './../checker/check-content'
 import { CheckDescMeta } from './../checker/check-desc-meta'
 import { CheckTitle } from './../checker/check-title'
-import { Param, SEOResponse } from '../types'
+import { Param, SEOResponse, getTranslation } from '../types'
 
 const Calculation = (
-  { keyword, title, content, descriptionMeta }: Param,
-  domDocument: Document
+  { keyword, title, descriptionMeta }: Param,
+  domDocument: Document,
+  t: getTranslation
 ): SEOResponse => {
-  const contentScore = new CheckContent(domDocument, keyword)
-  const descMetaScore = new CheckDescMeta(descriptionMeta, keyword)
-  const titleScore = new CheckTitle(title, keyword)
+  const contentScore = new CheckContent(domDocument, keyword, t)
+  const descMetaScore = new CheckDescMeta(descriptionMeta, keyword, t)
+  const titleScore = new CheckTitle(title, keyword, t)
 
   const seoScore =
     contentScore.countScore(75) +

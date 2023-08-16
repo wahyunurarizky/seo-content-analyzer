@@ -24,3 +24,11 @@ export interface SectionScore {
   score: number
   messages: Array<SectionMessage>
 }
+
+export type Locale = 'en' | 'id'
+
+export type getTranslation = (
+  key: string,
+  status: string,
+  ...props: (string | number)[]
+) => string

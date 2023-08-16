@@ -1,4 +1,9 @@
-import { SectionMessage, SectionScore, statusMessage } from '../types'
+import {
+  SectionMessage,
+  SectionScore,
+  getTranslation,
+  statusMessage
+} from '../types'
 
 export class SectionChecker implements SectionScore {
   public name: string
@@ -6,13 +11,15 @@ export class SectionChecker implements SectionScore {
   public messages: SectionMessage[]
   protected text: string
   protected keyword: string
+  protected t: getTranslation
 
-  constructor(name: string, text: string, keyword: string) {
+  constructor(name: string, text: string, keyword: string, t: getTranslation) {
     this.name = name
     this.text = text.toLowerCase()
     this.keyword = keyword.toLowerCase()
     this.score = 0
     this.messages = []
+    this.t = t
   }
 
   getResult(): SectionScore {

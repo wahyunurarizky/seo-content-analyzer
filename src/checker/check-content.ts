@@ -1,12 +1,13 @@
 import { countWords, getDensity, wordExists } from '../helper/helper'
+import { getTranslation } from '../types'
 import { AtomicChecker, SectionChecker } from './SectionChecker'
 
 export class CheckContent extends SectionChecker {
   private domContent: Document
 
-  constructor(domContent: Document, keyword: string) {
+  constructor(domContent: Document, keyword: string, t: getTranslation) {
     const contentText = domContent.body?.textContent || ''
-    super('Content score', contentText, keyword)
+    super('Content score', contentText, keyword, t)
     this.domContent = domContent
 
     this.checkContentMinimumWords()
@@ -27,18 +28,18 @@ export class CheckContent extends SectionChecker {
 
     const message = new AtomicChecker(
       'CONTENT_MINIMUM_WORDS',
-      `Your text doesn't contain enough words, a minimum of ${perfectMinimum} words is recommended`
+      this.t('CONTENT_MINIMUM_WORDS', 'short', perfectMinimum)
     )
 
     if (contentLength > 0) {
       if (contentLength >= perfectMinimum) {
         message.score = 31
-        message.text = `Your text contains (${contentLength}) words`
+        message.text = this.t('CONTENT_MINIMUM_WORDS', 'perfect', contentLength)
         message.status = 'perfect'
       } else if (contentLength >= goodMinimum) {
         message.score = 21
         message.status = 'good'
-        message.text = `Your text contains (${contentLength}) words`
+        message.text = this.t('CONTENT_MINIMUM_WORDS', 'good', contentLength)
       } else {
         message.score = 1
       }
@@ -51,13 +52,16 @@ export class CheckContent extends SectionChecker {
   private checkH1Exists() {
     const listOfH1 = this.domContent.getElementsByTagName('h1')
 
-    const message = new AtomicChecker('H1_EXIST', `You should add a H1`)
+    const message = new AtomicChecker(
+      'H1_EXIST',
+      this.t('H1_EXIST', 'not_exists')
+    )
 
     if (listOfH1.length > 0) {
       for (const h1 of listOfH1) {
         if (!!h1.textContent?.trim()) {
           message.score = 5
-          message.text = `You've added a H1`
+          message.text = this.t('H1_EXIST', 'exists')
           message.status = 'perfect'
           break
         }
@@ -72,14 +76,14 @@ export class CheckContent extends SectionChecker {
 
     const message = new AtomicChecker(
       'H1_USE_KEYWORD',
-      `The focus keyword "${this.keyword}" doesn't appear in the H1`
+      this.t('H1_USE_KEYWORD', 'not_used', this.keyword)
     )
 
     if (listOfH1.length > 0) {
       for (const h1 of listOfH1) {
         if (wordExists(h1.textContent || '', this.keyword)) {
           message.score = 14
-          message.text = `Focus keyword "${this.keyword}" is used in the H1`
+          message.text = this.t('H1_USE_KEYWORD', 'used', this.keyword)
           message.status = 'perfect'
           break
         }
@@ -95,7 +99,7 @@ export class CheckContent extends SectionChecker {
 
     const message = new AtomicChecker(
       'FIRST_PARAGRAPH_CONTAINS_KEYWORD',
-      `The focus keyword "${this.keyword}" doesn't appear in first paragraph of the text`
+      this.t('FIRST_PARAGRAPH_CONTAINS_KEYWORD', 'not_used', this.keyword)
     )
 
     if (
@@ -103,7 +107,11 @@ export class CheckContent extends SectionChecker {
       wordExists(firstParagraph.textContent || '', this.keyword)
     ) {
       message.score = 5
-      message.text = `The focus keyword "${this.keyword}" is used in the first paragraph of the text`
+      message.text = this.t(
+        'FIRST_PARAGRAPH_CONTAINS_KEYWORD',
+        'used',
+        this.keyword
+      )
       message.status = 'perfect'
     }
 
@@ -114,14 +122,20 @@ export class CheckContent extends SectionChecker {
   private checkDensity() {
     const message = new AtomicChecker(
       'DENSITY',
-      `You should use the focus keyword keyword ${this.keyword} more often, to improve the keyword density (0%)`
+      this.t('DENSITY', 'bad', this.keyword)
     )
 
     const [densityResult, keywordFound] = getDensity(this.text, this.keyword)
 
     if (densityResult > 0) {
       message.score = 20
-      message.text = `Your keyword density (${densityResult}%) is pretty perfect, focus keyword "ASD" used ${keywordFound} time(s)`
+      message.text = this.t(
+        'DENSITY',
+        'perfect',
+        densityResult,
+        this.keyword,
+        keywordFound
+      )
       message.status = 'perfect'
     }
 
@@ -133,11 +147,11 @@ export class CheckContent extends SectionChecker {
     const aTags = this.domContent.getElementsByTagName('a')
     const message = new AtomicChecker(
       'LINK_EXISTS',
-      `Add relevant links to improve user experience and internal link structure`
+      this.t('LINK_EXISTS', 'not_exists')
     )
 
     if (aTags.length > 0) {
-      message.text = `You've added ${aTags.length} link(s) to the document`
+      message.text = this.t('LINK_EXISTS', 'exists', aTags.length)
       message.status = 'perfect'
       message.score = 10
     }
@@ -148,10 +162,13 @@ export class CheckContent extends SectionChecker {
 
   private checkImageExists() {
     const imageTags = this.domContent.getElementsByTagName('img')
-    const message = new AtomicChecker('IMG_EXISTS', `You should add an image`)
+    const message = new AtomicChecker(
+      'IMG_EXISTS',
+      this.t('IMG_EXISTS', 'not_exists')
+    )
 
     if (imageTags.length > 0) {
-      message.text = `You've added an image`
+      message.text = this.t('IMG_EXISTS', 'exists')
       message.status = 'perfect'
       message.score = 5
     }
@@ -165,14 +182,14 @@ export class CheckContent extends SectionChecker {
 
     const message = new AtomicChecker(
       'IMG_ALT_USE_KEYWORD',
-      `The focus keyword "${this.keyword}" doesn't appear in the image Alt tag`
+      this.t('IMG_ALT_USE_KEYWORD', 'not_used', this.keyword)
     )
 
     if (listOfImg.length > 0) {
       for (const img of listOfImg) {
         if (img.alt && wordExists(img.alt, this.keyword)) {
           message.score = 5
-          message.text = `You've used the focus keyword "${this.keyword}" in the alt tag of an image `
+          message.text = this.t('IMG_ALT_USE_KEYWORD', 'used', this.keyword)
           message.status = 'perfect'
           break
         }
@@ -187,14 +204,14 @@ export class CheckContent extends SectionChecker {
 
     const message = new AtomicChecker(
       'IMG_TITLE_USE_KEYWORD',
-      `The focus keyword "${this.keyword}" doesn't appear in the image Title tag`
+      this.t('IMG_TITLE_USE_KEYWORD', 'not_used', this.keyword)
     )
 
     if (listOfImg.length > 0) {
       for (const img of listOfImg) {
         if (img.title && wordExists(img.title, this.keyword)) {
           message.score = 5
-          message.text = `You've used the focus keyword "${this.keyword}" in the title tag of an image `
+          message.text = this.t('IMG_TITLE_USE_KEYWORD', 'used', this.keyword)
           message.status = 'perfect'
           break
         }
