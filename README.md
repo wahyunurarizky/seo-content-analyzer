@@ -26,6 +26,17 @@ const result = SEOContentAnalyzer({
   descriptionMeta: 'your-description-meta-here',
   content: '<h1>your content here</h1><p>cool</p>'
 })
+
+// WITH LANGUAGE
+const result = SEOContentAnalyzer(
+  {
+    keyword: 'your-keyword-here',
+    title: 'your-title-here',
+    descriptionMeta: 'your-description-meta-here',
+    content: '<h1>your content here</h1><p>cool</p>'
+  },
+  'id'
+)
 ```
 
 ## Contributing

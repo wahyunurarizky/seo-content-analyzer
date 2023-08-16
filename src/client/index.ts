@@ -2,7 +2,7 @@ import Calculation from '../checker/calculation'
 import setLocale from '../lang'
 import { Locale, Param } from '../types'
 
-const SEOContentAnalyzer = (param: Param, locale: Locale) => {
+const SEOContentAnalyzer = (param: Param, locale: Locale = 'en') => {
   const { t } = setLocale(locale)
 
   return Calculation(
