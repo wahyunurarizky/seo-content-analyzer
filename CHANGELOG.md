@@ -1,5 +1,15 @@
 # seo-content-analyzer
 
+## 1.3.0
+
+### Minor Changes
+
+- 53ad4b2: add lang
+
+### Patch Changes
+
+- 6e459c4: lowercase check content fix
+
 ## 1.1.3
 
 ### Patch Changes
