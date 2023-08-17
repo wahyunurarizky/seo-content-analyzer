@@ -1,5 +1,11 @@
 # seo-content-analyzer
 
+## 1.2.7
+
+### Patch Changes
+
+- e0c624e: fix helper
+
 ## 1.2.6
 
 ### Patch Changes
