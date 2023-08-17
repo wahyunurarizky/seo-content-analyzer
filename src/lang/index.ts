@@ -2,10 +2,9 @@ import path from 'path'
 import fs from 'fs'
 import { Locale, getTranslation, statusMessage } from '../types'
 import { insertText, removeCharOfString } from '../helper/helper'
+import lang from './lang'
 
-let defaultLang = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, '..', 'lang', 'en.json')).toString()
-)
+let defaultLang = lang['en']
 
 const t: getTranslation = (key, status, ...props) => {
   let text = defaultLang[key][status]
@@ -27,11 +26,7 @@ const t: getTranslation = (key, status, ...props) => {
 }
 
 const setLocale = (locale: Locale) => {
-  defaultLang = JSON.parse(
-    fs
-      .readFileSync(path.resolve(__dirname, '..', 'lang', locale + '.json'))
-      .toString()
-  )
+  defaultLang = lang[locale]
 
   return { t }
 }
