@@ -6,7 +6,8 @@ export class CheckContent extends SectionChecker {
   private domContent: Document
 
   constructor(domContent: Document, keyword: string, t: getTranslation) {
-    const contentText = domContent.body?.textContent || ''
+    const contentText =
+      domContent.body?.innerText || domContent.body?.textContent || ''
     super('Content score', contentText, keyword, t)
     this.domContent = domContent
 
