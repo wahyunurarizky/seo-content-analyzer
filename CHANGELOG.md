@@ -1,5 +1,11 @@
 # seo-content-analyzer
 
+## 1.2.6
+
+### Patch Changes
+
+- 59ffc47: fix helper density and wordexists
+
 ## 1.2.5
 
 ### Patch Changes
