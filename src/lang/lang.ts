@@ -87,10 +87,10 @@ const lang: Record<string, any> = {
     },
     DESC_META_LENGTH: {
       short:
-        'judul terlalu pendek, ?? karakter tersedia. (?? dari ?? karakter digunakan)',
-      long: 'judul terlalu panjang, ?? karakter tersedia. (?? dari ?? karakter digunakan)',
+        'deskripsi meta terlalu pendek, ?? karakter tersedia. (?? dari ?? karakter digunakan)',
+      long: 'deskripsi meta terlalu panjang, ?? karakter tersedia. (?? dari ?? karakter digunakan)',
       perfect:
-        'judul sempurna, ?? karakter tersedia. (?? dari ?? karakter digunakan)'
+        'deskripsi meta sempurna, ?? karakter tersedia. (?? dari ?? karakter digunakan)'
     },
     DESC_META_USE_KEYWORD: {
       not_used: 'Fokus keyword "??" tidak ada pada Meta deskripsi',
