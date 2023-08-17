@@ -1,5 +1,11 @@
 # seo-content-analyzer
 
+## 1.2.3
+
+### Patch Changes
+
+- cbdc4ad: fix dikit
+
 ## 1.2.2
 
 ### Patch Changes
