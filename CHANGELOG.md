@@ -1,5 +1,11 @@
 # seo-content-analyzer
 
+## 1.2.5
+
+### Patch Changes
+
+- 7a6498a: if it is to good to be true, is not true
+
 ## 1.2.4
 
 ### Patch Changes
