@@ -125,16 +125,16 @@ const lang: Record<string, any> = {
       exists: '?? Tautan ditambakan ke dokumen'
     },
     IMG_EXISTS: {
-      not_exists: 'Tidak ada H1',
-      exists: 'Terdapat H1'
+      not_exists: 'Tidak ada Gambar',
+      exists: 'Terdapat Gambar'
     },
     IMG_ALT_USE_KEYWORD: {
-      not_used: 'Fokus keyword "??" tidak ada pada image alt tag',
-      used: 'Fokus keyword "??" digunakan pada image alt tag'
+      not_used: 'Fokus keyword "??" tidak ada pada gambar alt tag',
+      used: 'Fokus keyword "??" digunakan pada gambar alt tag'
     },
     IMG_TITLE_USE_KEYWORD: {
-      not_used: 'Fokus keyword "??" tidak ada pada image title tag',
-      used: 'Fokus keyword "??" digunakan pada image title tag'
+      not_used: 'Fokus keyword "??" tidak ada pada gambar title tag',
+      used: 'Fokus keyword "??" digunakan pada gambar title tag'
     }
   }
 }
