@@ -1,5 +1,3 @@
-import lang from '../lang/lang'
-
 export interface Param {
   keyword: string
   title: string

@@ -1,5 +1,3 @@
-import path from 'path'
-import fs from 'fs'
 import { Locale, getTranslation, statusMessage } from '../types'
 import { insertText, removeCharOfString } from '../helper/helper'
 import lang from './lang'
