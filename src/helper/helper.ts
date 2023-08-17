@@ -15,7 +15,7 @@ export const getDensity = (
 ): [result: number, keywordFound: number] => {
   const s = splitWords(text)
 
-  const numOfKeyword = s.filter((d) => d === keyword).length
+  const numOfKeyword = text.match(new RegExp(keyword, 'g'))?.length || 0
 
   return [Math.round((numOfKeyword * 100) / s.length), numOfKeyword]
 }
@@ -30,14 +30,15 @@ export const wordExists = (
   firstNumChar?: number
 ): boolean => {
   text = text.toLowerCase()
+  const arrKeyword = splitWords(keyword.toLowerCase())
   if (firstNumChar) {
     let i = firstNumChar - 1
     while (text[i] && text[i]?.trim()) {
       i++
     }
-    return splitWords(text.slice(0, i)).includes(keyword)
+    return arrKeyword.every((k) => splitWords(text.slice(0, i)).includes(k))
   }
-  return splitWords(text).includes(keyword)
+  return arrKeyword.every((k) => splitWords(text).includes(k))
 }
 
 export const insertText = (
