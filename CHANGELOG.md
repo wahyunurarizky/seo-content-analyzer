@@ -1,5 +1,11 @@
 # seo-content-analyzer
 
+## 1.2.4
+
+### Patch Changes
+
+- ecd12fa: fix
+
 ## 1.2.3
 
 ### Patch Changes
