@@ -15,6 +15,10 @@ export const countWords = (text: string): number => {
   return splitWords(text).length
 }
 
+export const countSentences = (text: string): number => {
+  return splitSentences(text).length
+}
+
 export const getDensity = (
   text: string,
   keyword: string
@@ -68,4 +72,45 @@ export const removeCharOfString = (
   topIndex: number
 ): string => {
   return text.slice(0, bottomIndex) + text.slice(topIndex + 1)
+}
+
+export const countSyllables = (word: string): number => {
+  let count: number = 0;
+  let vowels: string = "aeiouy"
+  word = word.toLowerCase();
+  if (vowels.includes(word.charAt(0))) {
+    count += 1;
+  }
+  for (let index = 0; index < word.length; index++) {
+    if (vowels.includes(word.charAt(index)) && !vowels.includes(word.charAt(index-1))) {
+      count += 1;
+    }
+  }
+  if (word.slice(-1) === "e") {
+    count -= 1;
+  }
+  if (count == 0) {
+    count += 1;
+  }
+
+  return count;
+}
+export const fleshReadingScore = (text: string): number => {
+  const base = 206.835
+  const firstParam = 1.015
+  const secondParam = 84.6
+  const totalWords = countWords(text)
+  const totalSentences = countSentences(text)
+  const totalSyllables = countSyllables(text)
+
+  
+  if (totalSentences !== 0 && totalWords !== 0 && totalSyllables !== 0) {
+    return Math.round(
+      base - 
+      firstParam * (totalWords / totalSentences) - 
+      secondParam * (totalSyllables / totalWords)
+      )
+  } else {
+    return 0
+  }
 }

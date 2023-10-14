@@ -1,4 +1,4 @@
-import { countWords, getDensity, wordExists, splitSentences } from '../helper/helper'
+import { countWords, getDensity, wordExists, splitSentences, countSentences, fleshReadingScore } from '../helper/helper'
 import { getTranslation } from '../types'
 import { AtomicChecker, SectionChecker } from './SectionChecker'
 
@@ -21,6 +21,7 @@ export class CheckContent extends SectionChecker {
     this.checkImageAltContainsKeword()
     this.checkImageTitleContainsKeword()
     this.checkSentencesLength()
+    this.checkFleshReadability()
   }
 
   private checkContentMinimumWords() {
@@ -130,7 +131,7 @@ export class CheckContent extends SectionChecker {
     const [densityResult, keywordFound] = getDensity(this.text, this.keyword)
 
     if (densityResult > 0) {
-      message.score = 20
+      message.score = 15
       message.text = this.t(
         'DENSITY',
         'perfect',
@@ -224,9 +225,8 @@ export class CheckContent extends SectionChecker {
     this.messages.push(message.getResult())
   }
   private checkSentencesLength() {
-    
     const sentences = splitSentences(this.text)
-    const numberOfSentences = sentences.length
+    const numberOfSentences = countSentences(this.text)
     let longSentences = 0
     let percentage: number
     if (numberOfSentences > 0) {
@@ -252,6 +252,27 @@ export class CheckContent extends SectionChecker {
       message.score = 3
       message.status = 'good'
       message.text = this.t('SENTENCES_LENGTH', 'good', percentage)
+    }
+    this.score += message.score
+    this.messages.push(message.getResult())
+  }
+
+  private checkFleshReadability() {
+    let score = fleshReadingScore(this.text)
+
+    const message = new AtomicChecker(
+      'FLESH_READING',
+      this.t('FLESH_READING', 'difficult', score)
+    )
+
+    if (score > 60) {
+      message.score = 5
+      message.text = this.t('FLESH_READING', 'perfect', score)
+      message.status = 'perfect'
+    } else if (score > 40) {
+      message.score = 3
+      message.text = this.t('FLESH_READING', 'good', score)
+      message.status = 'good'
     }
     this.score += message.score
     this.messages.push(message.getResult())

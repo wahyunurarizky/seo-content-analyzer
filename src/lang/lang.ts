@@ -72,6 +72,11 @@ const lang: Record<string, any> = {
       long: '??% of sentences contain more than 20 words, which is more than the maximum recommended value of 10%',
       good: '??% of sentences contain more than 20 words, which is a little bit more than the maximum recommended value of 10%',
       perfect: 'Only ??% of sentences contain more than 20 words, which is perfect'
+    },
+    FLESH_READING: {
+      difficult: 'Your text has a Flesch reading score of ??, which is considered difficult to read. Consider using shorter sentences and easier words.',
+      good: 'Your text has a Flesch reading score of ??, which is fairly difficult to read.',
+      perfect: 'Perfect! Your text has a Flesch reading score of ??, which is considered easy to read.'
     }
   },
   id: {
@@ -145,6 +150,11 @@ const lang: Record<string, any> = {
       long: '??% kalimat mengandung lebih dari 20 kata, yang melebihi nilai maksimum yang disarankan sebesar 10%',
       good: '??% kalimat mengandung lebih dari 20 kata, yang sedikit lebih banyak dari nilai maksimum yang disarankan yaitu 10%',
       perfect: 'Hanya ??% kalimat yang mengandung lebih dari 20 kata, itu sempurna'
+    },
+    FLESH_READING: {
+      difficult: 'Teks Anda memiliki skor membaca Flesch sebesar ??%, yang dianggap sulit untuk dibaca. Pertimbangkan untuk menggunakan kalimat yang lebih pendek dan kata-kata yang lebih mudah.',
+      good: 'Teks Anda memiliki skor membaca Flesch ??, yang cukup sulit untuk dibaca.',
+      perfect: 'Sempurna! Teks Anda memiliki skor membaca Flesch sebesar ??%, yang dianggap mudah dibaca.'
     }
   }
 }
