@@ -67,6 +67,11 @@ const lang: Record<string, any> = {
     IMG_TITLE_USE_KEYWORD: {
       not_used: 'The focus keyword "??" doesn\'t appear in the image title tag',
       used: 'The focus keyword "??" is used in the image title tag'
+    },
+    SENTENCES_LENGTH: {
+      long: '??% of sentences contain more than 20 words, which is more than the maximum recommended value of 10%',
+      good: '??% of sentences contain more than 20 words, which is a little bit more than the maximum recommended value of 10%',
+      perfect: 'Only ??% of sentences contain more than 20 words, which is perfect'
     }
   },
   id: {
@@ -135,6 +140,11 @@ const lang: Record<string, any> = {
     IMG_TITLE_USE_KEYWORD: {
       not_used: 'Fokus keyword "??" tidak ada pada gambar title tag',
       used: 'Fokus keyword "??" digunakan pada gambar title tag'
+    },
+    SENTENCES_LENGTH: {
+      long: '??% kalimat mengandung lebih dari 20 kata, yang melebihi nilai maksimum yang disarankan sebesar 10%',
+      good: '??% kalimat mengandung lebih dari 20 kata, yang sedikit lebih banyak dari nilai maksimum yang disarankan yaitu 10%',
+      perfect: 'Hanya ??% kalimat yang mengandung lebih dari 20 kata, itu sempurna'
     }
   }
 }

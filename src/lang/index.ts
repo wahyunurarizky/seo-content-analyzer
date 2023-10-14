@@ -11,7 +11,7 @@ const t: getTranslation = (key, status, ...props) => {
   let i = 0
 
   while (text?.search(regex) !== -1) {
-    if (!props[i]) {
+    if (!props[i] && props[i] !== 0) {
       break
     }
     const index = text?.search(regex)

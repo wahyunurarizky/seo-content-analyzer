@@ -1,4 +1,4 @@
-import { countWords, getDensity, wordExists } from '../helper/helper'
+import { countWords, getDensity, wordExists, splitSentences } from '../helper/helper'
 import { getTranslation } from '../types'
 import { AtomicChecker, SectionChecker } from './SectionChecker'
 
@@ -20,6 +20,7 @@ export class CheckContent extends SectionChecker {
     this.checkImageExists()
     this.checkImageAltContainsKeword()
     this.checkImageTitleContainsKeword()
+    this.checkSentencesLength()
   }
 
   private checkContentMinimumWords() {
@@ -154,7 +155,7 @@ export class CheckContent extends SectionChecker {
     if (aTags.length > 0) {
       message.text = this.t('LINK_EXISTS', 'exists', aTags.length)
       message.status = 'perfect'
-      message.score = 10
+      message.score = 5
     }
     this.score += message.score
 
@@ -219,6 +220,39 @@ export class CheckContent extends SectionChecker {
       }
     }
 
+    this.score += message.score
+    this.messages.push(message.getResult())
+  }
+  private checkSentencesLength() {
+    
+    const sentences = splitSentences(this.text)
+    const numberOfSentences = sentences.length
+    let longSentences = 0
+    let percentage: number
+    if (numberOfSentences > 0) {
+      for (const sentence of sentences) {
+        if (countWords(sentence) > 20) {
+          longSentences += 1;
+        }
+      }
+      percentage = Math.round((longSentences / numberOfSentences) * 100)
+    } else {
+      percentage = 0
+    }
+    const message = new AtomicChecker(
+      'SENTENCES_LENGTH',
+      this.t('SENTENCES_LENGTH', 'long', percentage)
+    )
+    if (percentage < 10)
+    {
+      message.score = 5
+      message.text = this.t('SENTENCES_LENGTH', 'perfect', percentage)
+      message.status = 'perfect'
+    } else if (percentage < 20) {
+      message.score = 3
+      message.status = 'good'
+      message.text = this.t('SENTENCES_LENGTH', 'good', percentage)
+    }
     this.score += message.score
     this.messages.push(message.getResult())
   }

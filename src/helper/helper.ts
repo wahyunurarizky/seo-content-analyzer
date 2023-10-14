@@ -5,6 +5,12 @@ export const splitWords = (text: string): Array<string> => {
   return text.split(' ').filter((s) => !!s.trim())
 }
 
+export const splitSentences = (text: string): string[] => {
+  const regex = /(?<![A-Z].?)[.?!]\s+/
+  let sentences: string[] = text.split(regex);
+  return sentences;
+}
+
 export const countWords = (text: string): number => {
   return splitWords(text).length
 }
