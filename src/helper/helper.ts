@@ -114,3 +114,23 @@ export const fleshReadingScore = (text: string): number => {
     return 0
   }
 }
+
+export const longSectionExists = (elements: Array<Element>): boolean => {
+  let longSectionExists: boolean = false
+  let sectionLength: number = 0
+
+  elements.forEach((element) => {
+    if (element.tagName.startsWith('H')) {
+      sectionLength = 0
+    } else {
+      const elementText = element.textContent || ''
+      sectionLength += countWords(elementText)
+    }
+    
+    if (sectionLength > 300) {
+      longSectionExists = true
+    }
+  })
+  return longSectionExists;
+}
+  

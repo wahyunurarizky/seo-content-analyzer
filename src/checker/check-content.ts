@@ -1,4 +1,4 @@
-import { countWords, getDensity, wordExists, splitSentences, countSentences, fleshReadingScore } from '../helper/helper'
+import { countWords, getDensity, wordExists, splitSentences, countSentences, fleshReadingScore, longSectionExists } from '../helper/helper'
 import { getTranslation } from '../types'
 import { AtomicChecker, SectionChecker } from './SectionChecker'
 
@@ -15,6 +15,7 @@ export class CheckContent extends SectionChecker {
     this.checkH1Exists()
     this.checkH1ContainsKeyword()
     this.checkFirstParagraphContainsKeyword()
+    this.checkSectionsLength()
     this.checkDensity()
     this.checkLinkExists()
     this.checkImageExists()
@@ -36,11 +37,11 @@ export class CheckContent extends SectionChecker {
 
     if (contentLength > 0) {
       if (contentLength >= perfectMinimum) {
-        message.score = 31
+        message.score = 26
         message.text = this.t('CONTENT_MINIMUM_WORDS', 'perfect', contentLength)
         message.status = 'perfect'
       } else if (contentLength >= goodMinimum) {
-        message.score = 21
+        message.score = 18
         message.status = 'good'
         message.text = this.t('CONTENT_MINIMUM_WORDS', 'good', contentLength)
       } else {
@@ -114,6 +115,26 @@ export class CheckContent extends SectionChecker {
         'FIRST_PARAGRAPH_CONTAINS_KEYWORD',
         'used',
         this.keyword
+      )
+      message.status = 'perfect'
+    }
+
+    this.score += message.score
+    this.messages.push(message.getResult())
+  }
+
+  private checkSectionsLength() {
+    const message = new AtomicChecker(
+      'SECTIONS_LENGTH',
+      this.t('SECTIONS_LENGTH', 'bad')
+    )
+
+    const elements = Array.from(this.domContent.body.children)
+    if (!longSectionExists(elements)) {
+      message.score = 5
+      message.text = this.t(
+        'SECTIONS_LENGTH',
+        'perfect',
       )
       message.status = 'perfect'
     }

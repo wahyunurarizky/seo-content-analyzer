@@ -42,9 +42,12 @@ const lang: Record<string, any> = {
       used: 'The focus keyword "??" is used in the H1'
     },
     FIRST_PARAGRAPH_CONTAINS_KEYWORD: {
-      not_used:
-        'The focus keyword "??" doesn\'t appear in first paragraph of the text',
+      not_used: 'The focus keyword "??" doesn\'t appear in first paragraph of the text',
       used: 'The focus keyword "??" is used in first paragraph of the text'
+    },
+    SECTIONS_LENGTH: {
+      bad: 'Some sections in your text contain more than 300 words. Consider adding subheadings to reduce lengthy sections.',
+      perfect: 'There are no long sections in your text.'
     },
     DENSITY: {
       bad: 'You should use the focus keyword ?? more often, to improve the keyword density (0%)',
@@ -123,6 +126,10 @@ const lang: Record<string, any> = {
     FIRST_PARAGRAPH_CONTAINS_KEYWORD: {
       not_used: 'Fokus keyword "??" tidak ada pada paragraph pertama',
       used: 'Fokus keyword "??" digunakan pada paragraph pertama'
+    },
+    SECTIONS_LENGTH: {
+      bad: 'Beberapa bagian dalam teks Anda berisi lebih dari 300 kata. Pertimbangkan untuk menambahkan subjudul untuk mengurangi bagian yang panjang.',
+      perfect: 'Tidak ada bagian panjang dalam teks Anda.'
     },
     DENSITY: {
       bad: 'Gunakan fokus keyword "??" lebih sering, untuk meningkatkan kepadatan keyword (0%)',
