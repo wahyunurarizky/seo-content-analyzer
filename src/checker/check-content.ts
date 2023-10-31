@@ -1,4 +1,4 @@
-import { countWords, getDensity, wordExists, splitSentences, countSentences, fleshReadingScore, longSectionExists } from '../helper/helper'
+import { countWords, getDensity, wordExists, splitSentences, countSentences, fleshReadingScore, longSectionExists, splitWords, usingPassiveVoice } from '../helper/helper'
 import { getTranslation } from '../types'
 import { AtomicChecker, SectionChecker } from './SectionChecker'
 
@@ -22,6 +22,7 @@ export class CheckContent extends SectionChecker {
     this.checkImageAltContainsKeword()
     this.checkImageTitleContainsKeword()
     this.checkSentencesLength()
+    this.checkPassiveVoice()
     this.checkFleshReadability()
   }
 
@@ -37,11 +38,11 @@ export class CheckContent extends SectionChecker {
 
     if (contentLength > 0) {
       if (contentLength >= perfectMinimum) {
-        message.score = 26
+        message.score = 21
         message.text = this.t('CONTENT_MINIMUM_WORDS', 'perfect', contentLength)
         message.status = 'perfect'
       } else if (contentLength >= goodMinimum) {
-        message.score = 18
+        message.score = 16
         message.status = 'good'
         message.text = this.t('CONTENT_MINIMUM_WORDS', 'good', contentLength)
       } else {
@@ -273,6 +274,47 @@ export class CheckContent extends SectionChecker {
       message.score = 3
       message.status = 'good'
       message.text = this.t('SENTENCES_LENGTH', 'good', percentage)
+    }
+    this.score += message.score
+    this.messages.push(message.getResult())
+  }
+
+  private checkPassiveVoice() {
+    const perfectMinimum = 10
+    const goodMinimum = 20
+
+    const message = new AtomicChecker(
+      'PASSIVE_VOICE',
+      this.t('PASSIVE_VOICE', 'bad', goodMinimum)
+    )
+
+    const sentences = splitSentences(this.text)
+    const numberOfSentences = countSentences(this.text)
+    
+    let numberOfPassiveSentences: number = 0
+    let result: boolean
+    sentences.forEach((sentence) => {
+      result = usingPassiveVoice(sentence)
+      console.log(result)
+      if (result) {
+        numberOfPassiveSentences += 1
+      }
+    })
+
+    const passivePercentage = Math.round(numberOfPassiveSentences * 100 / numberOfSentences)
+
+    if (passivePercentage < 10) {
+      message.score = 5
+      message.text = this.t('PASSIVE_VOICE', 'perfect', passivePercentage)
+      message.status = 'perfect'
+    } else if (passivePercentage < 20) {
+      message.score = 3
+      message.text = this.t('PASSIVE_VOICE', 'good', passivePercentage)
+      message.status = 'good'
+    } else {
+      message.score = 0
+      message.text = this.t('PASSIVE_VOICE', 'bad', passivePercentage)
+      message.status = 'bad'
     }
     this.score += message.score
     this.messages.push(message.getResult())

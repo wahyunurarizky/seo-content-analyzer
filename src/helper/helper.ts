@@ -1,3 +1,6 @@
+import * as enpos from 'en-pos'
+const Tag = enpos.Tag
+
 export const splitWords = (text: string): Array<string> => {
   text = text.replace(/(^\s*)|(\s*$)/gi, '') //exclude  start and end white-space
   text = text.replace(/\n/g, ' ')
@@ -6,8 +9,11 @@ export const splitWords = (text: string): Array<string> => {
 }
 
 export const splitSentences = (text: string): string[] => {
-  const regex = /(?<![A-Z].?)[.?!]\s+/
+  const regex = /(?<![A-Z].)[.?!;:\n]\s+/
   let sentences: string[] = text.split(regex);
+  sentences.forEach((sentence, index) => {
+    sentences[index] = sentence.replace(/(\.|\?|\!)+$/g, '') // Remove trailing punctuation if present
+  })
   return sentences;
 }
 
@@ -134,3 +140,67 @@ export const longSectionExists = (elements: Array<Element>): boolean => {
   return longSectionExists;
 }
   
+export const usingPassiveVoice = (text: string) => {
+  console.log(text)
+  const passiveTensePatterns = [
+    ['VBZ', 'VBN'],
+    ['VBP', 'VBN'],
+    ['VBZ', 'VBG', 'VBN'],
+    ['VBP', 'VBG', 'VBN'],
+    ['VBD', 'VBN'],
+    ['VBD', 'VBG', 'VBN'],
+    ['VBZ', 'VBN', 'VBN'],
+    ['VBP', 'VBN', 'VBN'],
+    ['VBD', 'VBN', 'VBN'],
+    ['MD', 'VB', 'VBN'],
+    ['MD', 'VB', 'VBN', 'VBN'],
+    ['VBZ', 'RB', 'VBN'],
+    ['VBP', 'RB', 'VBN'],
+    ['VBZ', 'RB', 'VBG', 'VBN'],
+    ['VBP', 'RB', 'VBG', 'VBN'],
+    ['VBD', 'RB', 'VBN'],
+    ['VBD', 'RB', 'VBG', 'VBN'],
+    ['VBZ', 'RB', 'VBN', 'VBN'],
+    ['VBP', 'RB', 'VBN', 'VBN'],
+    ['VBD', 'RB', 'VBN', 'VBN'],
+    ['MD', 'RB', 'VB', 'VBN'],
+    ['MD', 'RB', 'VB', 'VBN', 'VBN'],
+    ['TO', 'VB', 'VBN']
+  ]
+
+  let passiveVoice: boolean = false
+  let words: Array<string> = splitWords(text)
+  var tags = new Tag(words)
+    .initial() 
+    .smooth()
+    .tags;
+
+    console.log(tags)
+  let indexOfPattern: number
+  passiveTensePatterns.forEach((pattern) => {
+    for (let indexOfTags = 0; indexOfTags < tags.length-pattern.length+1; indexOfTags++) {
+      indexOfPattern = 0
+      while (tags[indexOfTags+indexOfPattern] == pattern[indexOfPattern] && indexOfPattern < pattern.length) {
+        // Discarding the most probable false positives
+        if (
+          (pattern[indexOfPattern] == 'VBP' || pattern[indexOfPattern] == 'VB') 
+          && 
+          (words[indexOfTags+indexOfPattern] == 'have' || words[indexOfTags+indexOfPattern] == 'has')
+          ) {
+            console.log('inside if')
+            break
+          }
+        // console.log('indexOfPattern : ' + indexOfPattern)
+        if (indexOfPattern == pattern.length-1) {
+          // console.log('indexOfPattern == pattern.length')
+          passiveVoice = true
+        }
+        indexOfPattern++
+      }
+      if (passiveVoice) {
+        break
+      }
+    }
+  })
+  return passiveVoice
+}

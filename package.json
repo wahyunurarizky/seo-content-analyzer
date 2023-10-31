@@ -23,6 +23,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "en-pos": "^1.0.16",
     "jsdom": "^22.1.0"
   }
 }
