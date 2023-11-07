@@ -42,9 +42,12 @@ const lang: Record<string, any> = {
       used: 'The focus keyword "??" is used in the H1'
     },
     FIRST_PARAGRAPH_CONTAINS_KEYWORD: {
-      not_used:
-        'The focus keyword "??" doesn\'t appear in first paragraph of the text',
+      not_used: 'The focus keyword "??" doesn\'t appear in first paragraph of the text',
       used: 'The focus keyword "??" is used in first paragraph of the text'
+    },
+    SECTIONS_LENGTH: {
+      bad: 'Some sections in your text contain more than 300 words. Consider adding subheadings to reduce lengthy sections.',
+      perfect: 'There are no long sections in your text.'
     },
     DENSITY: {
       bad: 'You should use the focus keyword ?? more often, to improve the keyword density (0%)',
@@ -67,6 +70,21 @@ const lang: Record<string, any> = {
     IMG_TITLE_USE_KEYWORD: {
       not_used: 'The focus keyword "??" doesn\'t appear in the image title tag',
       used: 'The focus keyword "??" is used in the image title tag'
+    },
+    SENTENCES_LENGTH: {
+      long: '??% of sentences contain more than 20 words, which is more than the maximum recommended value of 10%',
+      good: '??% of sentences contain more than 20 words, which is a little bit more than the maximum recommended value of 10%',
+      perfect: 'Only ??% of sentences contain more than 20 words, which is perfect'
+    },
+    PASSIVE_VOICE: {
+      bad: 'You are using passive voice in ??% of sentences. This is more than the maximum recommended value of 10%',
+      good: 'You are using passive voice in ??% of sentences. This is a little bit more than the maximum recommended value of 10%',
+      perfect: 'Perfect! You are using passive voice in less than 10% of sentences.'
+    },
+    FLESH_READING: {
+      difficult: 'Your text has a Flesch reading score of ??, which is considered difficult to read. Consider using shorter sentences and easier words.',
+      good: 'Your text has a Flesch reading score of ??, which is fairly difficult to read.',
+      perfect: 'Perfect! Your text has a Flesch reading score of ??, which is considered easy to read.'
     }
   },
   id: {
@@ -114,6 +132,10 @@ const lang: Record<string, any> = {
       not_used: 'Fokus keyword "??" tidak ada pada paragraph pertama',
       used: 'Fokus keyword "??" digunakan pada paragraph pertama'
     },
+    SECTIONS_LENGTH: {
+      bad: 'Beberapa bagian dalam teks Anda berisi lebih dari 300 kata. Pertimbangkan untuk menambahkan subjudul untuk mengurangi bagian yang panjang.',
+      perfect: 'Tidak ada bagian panjang dalam teks Anda.'
+    },
     DENSITY: {
       bad: 'Gunakan fokus keyword "??" lebih sering, untuk meningkatkan kepadatan keyword (0%)',
       perfect:
@@ -135,6 +157,21 @@ const lang: Record<string, any> = {
     IMG_TITLE_USE_KEYWORD: {
       not_used: 'Fokus keyword "??" tidak ada pada gambar title tag',
       used: 'Fokus keyword "??" digunakan pada gambar title tag'
+    },
+    SENTENCES_LENGTH: {
+      long: '??% kalimat mengandung lebih dari 20 kata, yang melebihi nilai maksimum yang disarankan sebesar 10%',
+      good: '??% kalimat mengandung lebih dari 20 kata, yang sedikit lebih banyak dari nilai maksimum yang disarankan yaitu 10%',
+      perfect: 'Hanya ??% kalimat yang mengandung lebih dari 20 kata, itu sempurna'
+    },
+    PASSIVE_VOICE: {
+      bad: 'Anda menggunakan kalimat pasif di ??% kalimat. Ini lebih dari nilai maksimum yang disarankan sebesar 10%.',
+      good: 'Anda menggunakan kalimat pasif di ??% kalimat. Ini sedikit lebih tinggi dari nilai maksimum yang direkomendasikan yaitu 10%.',
+      perfect: 'Sempurna! Anda menggunakan kalimat pasif dalam kurang dari 10% kalimat.'
+    },
+    FLESH_READING: {
+      difficult: 'Teks Anda memiliki skor membaca Flesch sebesar ??%, yang dianggap sulit untuk dibaca. Pertimbangkan untuk menggunakan kalimat yang lebih pendek dan kata-kata yang lebih mudah.',
+      good: 'Teks Anda memiliki skor membaca Flesch ??, yang cukup sulit untuk dibaca.',
+      perfect: 'Sempurna! Teks Anda memiliki skor membaca Flesch sebesar ??%, yang dianggap mudah dibaca.'
     }
   }
 }

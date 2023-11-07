@@ -1,4 +1,4 @@
-import { countWords, getDensity, wordExists } from '../helper/helper'
+import { countWords, getDensity, wordExists, splitSentences, countSentences, fleshReadingScore, longSectionExists, splitWords, usingPassiveVoice } from '../helper/helper'
 import { getTranslation } from '../types'
 import { AtomicChecker, SectionChecker } from './SectionChecker'
 
@@ -15,11 +15,15 @@ export class CheckContent extends SectionChecker {
     this.checkH1Exists()
     this.checkH1ContainsKeyword()
     this.checkFirstParagraphContainsKeyword()
+    this.checkSectionsLength()
     this.checkDensity()
     this.checkLinkExists()
     this.checkImageExists()
     this.checkImageAltContainsKeword()
     this.checkImageTitleContainsKeword()
+    this.checkSentencesLength()
+    this.checkPassiveVoice()
+    this.checkFleshReadability()
   }
 
   private checkContentMinimumWords() {
@@ -34,11 +38,11 @@ export class CheckContent extends SectionChecker {
 
     if (contentLength > 0) {
       if (contentLength >= perfectMinimum) {
-        message.score = 31
+        message.score = 21
         message.text = this.t('CONTENT_MINIMUM_WORDS', 'perfect', contentLength)
         message.status = 'perfect'
       } else if (contentLength >= goodMinimum) {
-        message.score = 21
+        message.score = 16
         message.status = 'good'
         message.text = this.t('CONTENT_MINIMUM_WORDS', 'good', contentLength)
       } else {
@@ -120,6 +124,26 @@ export class CheckContent extends SectionChecker {
     this.messages.push(message.getResult())
   }
 
+  private checkSectionsLength() {
+    const message = new AtomicChecker(
+      'SECTIONS_LENGTH',
+      this.t('SECTIONS_LENGTH', 'bad')
+    )
+
+    const elements = Array.from(this.domContent.body.children)
+    if (!longSectionExists(elements)) {
+      message.score = 5
+      message.text = this.t(
+        'SECTIONS_LENGTH',
+        'perfect',
+      )
+      message.status = 'perfect'
+    }
+
+    this.score += message.score
+    this.messages.push(message.getResult())
+  }
+
   private checkDensity() {
     const message = new AtomicChecker(
       'DENSITY',
@@ -129,7 +153,7 @@ export class CheckContent extends SectionChecker {
     const [densityResult, keywordFound] = getDensity(this.text, this.keyword)
 
     if (densityResult > 0) {
-      message.score = 20
+      message.score = 15
       message.text = this.t(
         'DENSITY',
         'perfect',
@@ -154,7 +178,7 @@ export class CheckContent extends SectionChecker {
     if (aTags.length > 0) {
       message.text = this.t('LINK_EXISTS', 'exists', aTags.length)
       message.status = 'perfect'
-      message.score = 10
+      message.score = 5
     }
     this.score += message.score
 
@@ -219,6 +243,100 @@ export class CheckContent extends SectionChecker {
       }
     }
 
+    this.score += message.score
+    this.messages.push(message.getResult())
+  }
+  private checkSentencesLength() {
+    const sentences = splitSentences(this.text)
+    const numberOfSentences = countSentences(this.text)
+    let longSentences = 0
+    let percentage: number
+    if (numberOfSentences > 0) {
+      for (const sentence of sentences) {
+        if (countWords(sentence) > 20) {
+          longSentences += 1;
+        }
+      }
+      percentage = Math.round((longSentences / numberOfSentences) * 100)
+    } else {
+      percentage = 0
+    }
+    const message = new AtomicChecker(
+      'SENTENCES_LENGTH',
+      this.t('SENTENCES_LENGTH', 'long', percentage)
+    )
+    if (percentage < 10)
+    {
+      message.score = 5
+      message.text = this.t('SENTENCES_LENGTH', 'perfect', percentage)
+      message.status = 'perfect'
+    } else if (percentage < 20) {
+      message.score = 3
+      message.status = 'good'
+      message.text = this.t('SENTENCES_LENGTH', 'good', percentage)
+    }
+    this.score += message.score
+    this.messages.push(message.getResult())
+  }
+
+  private checkPassiveVoice() {
+    const perfectMinimum = 10
+    const goodMinimum = 20
+
+    const message = new AtomicChecker(
+      'PASSIVE_VOICE',
+      this.t('PASSIVE_VOICE', 'bad', goodMinimum)
+    )
+
+    const sentences = splitSentences(this.text)
+    const numberOfSentences = countSentences(this.text)
+    
+    let numberOfPassiveSentences: number = 0
+    let result: boolean
+    sentences.forEach((sentence) => {
+      result = usingPassiveVoice(sentence)
+      console.log(result)
+      if (result) {
+        numberOfPassiveSentences += 1
+      }
+    })
+
+    const passivePercentage = Math.round(numberOfPassiveSentences * 100 / numberOfSentences)
+
+    if (passivePercentage < 10) {
+      message.score = 5
+      message.text = this.t('PASSIVE_VOICE', 'perfect', passivePercentage)
+      message.status = 'perfect'
+    } else if (passivePercentage < 20) {
+      message.score = 3
+      message.text = this.t('PASSIVE_VOICE', 'good', passivePercentage)
+      message.status = 'good'
+    } else {
+      message.score = 0
+      message.text = this.t('PASSIVE_VOICE', 'bad', passivePercentage)
+      message.status = 'bad'
+    }
+    this.score += message.score
+    this.messages.push(message.getResult())
+  }
+
+  private checkFleshReadability() {
+    let score = fleshReadingScore(this.text)
+
+    const message = new AtomicChecker(
+      'FLESH_READING',
+      this.t('FLESH_READING', 'difficult', score)
+    )
+
+    if (score > 60) {
+      message.score = 5
+      message.text = this.t('FLESH_READING', 'perfect', score)
+      message.status = 'perfect'
+    } else if (score > 40) {
+      message.score = 3
+      message.text = this.t('FLESH_READING', 'good', score)
+      message.status = 'good'
+    }
     this.score += message.score
     this.messages.push(message.getResult())
   }
