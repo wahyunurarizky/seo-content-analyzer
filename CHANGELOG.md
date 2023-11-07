@@ -1,5 +1,11 @@
 # seo-content-analyzer
 
+## 1.2.8
+
+### Patch Changes
+
+- acfeaf1: enhancements
+
 ## 1.2.7
 
 ### Patch Changes
