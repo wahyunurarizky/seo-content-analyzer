@@ -2,11 +2,14 @@ import * as enpos from 'en-pos'
 const Tag = enpos.Tag
 
 export const splitWords = (text: string): Array<string> => {
-  text = text.replace(/(^\s*)|(\s*$)/gi, '') //exclude  start and end white-space
-  text = text.replace(/\n/g, ' ')
-  text = text.replace(/[ ]{2,}/gi, ' ') //2 or more space to 1
-  return text.split(' ').filter((s) => !!s.trim())
-}
+  text = text.replace(/(^\s*)|(\s*$)/gi, ''); // Remove leading and trailing whitespace
+  text = text.replace(/\n/g, ' '); // Replace newline with a space
+  text = text.replace(/[ ]{2,}/gi, ' '); // Replace 2 or more spaces with 1
+
+  // Split by spaces or punctuation (comma, dot, colon, semicolon)
+  return text.split(/[\s,.;:]+/).filter((s) => !!s.trim());
+};
+
 
 export const splitSentences = (text: string): string[] => {
   const regex = /(?<![A-Z].)[.?!;:\n]\s+/
